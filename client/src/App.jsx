@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import SingUp from "./pages/SingUp";
+import SignIn from "./pages/SignIn";
+import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
+import About from "./pages/About";
+import Header from "./components/Header";
+import PrivateRoute from "./components/PrivateRoute";
+import OnlyAdminPrivatRoute from "./components/OnlyAdminPrivatRoute";
+import CreatePost from "./components/CreatePost";
+import FooterComp from "./components/Footer";
+import UpdatePost from "./components/UpdatePost";
+import PostPage from "./pages/PostPage";
+import ScrollToTop from "./components/ScrollToTop";
+import Search from "./pages/Search";
+import isTokenExpired from "./utils/CheckTokeExpiry";
+import { useDispatch } from "react-redux";
+import { signoutSuccess } from "./redux/user/userSlice";
+import SessionExpirationMonitor from "./utils/SessionExpirationMonitor";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <SessionExpirationMonitor />
+      <ScrollToTop />
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/sign-up" element={<SingUp />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/search" element={<Search />} />
 
-export default App
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+        <Route element={<OnlyAdminPrivatRoute />}>
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/update-post/:postId" element={<UpdatePost />} />
+        </Route>
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/post/:postSlug" element={<PostPage />} />
+      </Routes>
+      <FooterComp />
+    </BrowserRouter>
+  );
+};
+
+export default App;
