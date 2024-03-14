@@ -16,7 +16,7 @@ const SessionExpirationMonitor = () => {
 
     const handleUserActivity = () => {
       clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(resetSession, 30 * 60 * 1000); // Set the same inactivity threshold as on the server (30 minutes)
+      inactivityTimer = setTimeout(resetSession, 60 * 60 * 1000); // Set the same inactivity threshold as on the server (30 minutes)
     };
 
     // Attach event listeners for user activity

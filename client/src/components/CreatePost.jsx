@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
+import CreatableSelect from "react-select/creatable";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import {
@@ -15,6 +16,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { SessionExpired } from "../utils/Alert";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { SelectMulti } from "../utils/Creatable";
 
 const CreatePost = () => {
   const [file, setFile] = useState(null);
@@ -38,9 +40,14 @@ const CreatePost = () => {
       try {
         const res = await fetch(`/api/post/getposts`);
         const data = await res.json();
+        // console.log("category:", data.posts);
 
         if (res.ok) {
-          setCategorries(data.posts.map((post) => post.category));
+          const getCategory = data.posts.map((post) => post.category);
+          const flattenedArray = getCategory.flat();
+          console.log(flattenedArray);
+
+          setCategorries(flattenedArray);
         }
         if (!res.ok) {
           if (res.status === 401) {
@@ -110,7 +117,7 @@ const CreatePost = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         setPublishError(data.message);
         if (res.status === 401) {
@@ -129,6 +136,7 @@ const CreatePost = () => {
       setPublishError("Something went wrong");
     }
   };
+  console.log(categorries);
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
@@ -150,8 +158,7 @@ const CreatePost = () => {
               setFormData({ ...formData, title: e.target.value })
             }
           />
-
-          {otherInput ? (
+          {/* {otherInput ? (
             <TextInput
               ref={inputRef}
               placeholder="Enter a Category"
@@ -185,7 +192,8 @@ const CreatePost = () => {
                 ))}
               <option value="other">Others</option>
             </Select>
-          )}
+          )} */}
+          <SelectMulti categorries={categorries} setFormData={setFormData} />
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-dotted p-3 border-teal-500">
           <FileInput

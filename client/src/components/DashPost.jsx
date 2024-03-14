@@ -20,7 +20,7 @@ const DashPost = () => {
       try {
         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
         const data = await res.json();
-
+        // console.log(data.posts.map((item) => item.category.length));
         if (res.ok) {
           setUserPosts(data.posts);
           if (data.posts.length < 9) {
@@ -87,7 +87,7 @@ const DashPost = () => {
       console.log(error.message);
     }
   };
-
+  console.log(userPosts.map((post) => post.category.map((single) => single)));
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && userPosts.length > 0 ? (
@@ -127,7 +127,23 @@ const DashPost = () => {
                       {post.title}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{post.category}</Table.Cell>
+                  <Table.Cell className="font-medium text-blue-400 hover:underline cursor-pointer capitalize">
+                    {post.category.map((innerArray, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-center border border-b-2 border-gray-200 rounded-md my-1"
+                      >
+                        {Array.isArray(innerArray) ? (
+                          innerArray.map((item, innerIndex) => (
+                            <span key={innerIndex}>{item}</span>
+                          ))
+                        ) : (
+                          <span>{innerArray}</span>
+                        )}
+                      </div>
+                    ))}
+                  </Table.Cell>
+
                   <Table.Cell>
                     <span
                       className="font-medium text-red-500 hover:underline cursor-pointer"

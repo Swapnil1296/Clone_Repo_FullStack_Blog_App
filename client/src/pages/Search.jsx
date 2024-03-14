@@ -5,6 +5,7 @@ import PostCard from "../components/PostCard";
 import { SessionExpired } from "../utils/Alert";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from 'react-redux';
+import { SelectMulti } from "./../utils/Creatable";
 
 const Search = () => {
   const [sideBarData, setSideBarData] = useState({
@@ -21,7 +22,7 @@ const Search = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const inputRef = useRef();
-  console.log("sidebar: ", sideBarData);
+  // console.log("sidebar: ", sideBarData);
   useEffect(() => {
     inputRef.current?.focus();
   }, [otherInput]);
@@ -32,16 +33,32 @@ const Search = () => {
         const data = await res.json();
 
         if (res.ok) {
-          setCategorries(data.posts.map((post) => post.category));
+          // [
+          //   ["Covid", "China "],
+          //   ["milk", "Event.KeyCode", "casdf"],
+          //   ["meta", "milk"],
+          //   ["Dom"],
+          //   ["Event.KeyCode"],
+          //   ["MernSTack"],
+          //   ["MernSTack"],
+          //   ["react"],
+          //   ["react"],
+          // ];
+          //converting this data into a single array
+          const getCategory = data.posts.map((post) => post.category);
+          const flattenedArray = getCategory.flat();
+          console.log(flattenedArray);
+
+          setCategorries(flattenedArray);
         }
-          if (!res.ok) {
-            if (res.status === 401) {
-              SessionExpired().then(() => {
-                dispatch(signoutSuccess());
-                navigate("/sign-in", { replace: true });
-              });
-            }
+        if (!res.ok) {
+          if (res.status === 401) {
+            SessionExpired().then(() => {
+              dispatch(signoutSuccess());
+              navigate("/sign-in", { replace: true });
+            });
           }
+        }
       } catch (error) {
         console.log(error.message);
       }
@@ -142,6 +159,8 @@ const Search = () => {
       setOtherInput(false);
     }
   };
+  console.log(sideBarData);
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
@@ -151,7 +170,7 @@ const Search = () => {
               Search Term
             </label>
             <TextInput
-              placeholder="Search..."
+              placeholder="Search...!"
               id="searchTerm"
               type="text"
               value={sideBarData.searchTerm}
@@ -209,6 +228,12 @@ const Search = () => {
                 <option value="other">Others</option>
               </Select>
             )}
+            {/* <SelectMulti
+              id="category"
+              isMulti={false}
+              categorries={categorries}
+              setFormData={setSideBarData}
+            /> */}
           </div>
           <Button type="submit" outline gradientDuoTone="purpleToPink">
             Apply Filters

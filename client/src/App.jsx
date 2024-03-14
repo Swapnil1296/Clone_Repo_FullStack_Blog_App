@@ -15,10 +15,11 @@ import UpdatePost from "./components/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Search from "./pages/Search";
-import isTokenExpired from "./utils/CheckTokeExpiry";
-import { useDispatch } from "react-redux";
-import { signoutSuccess } from "./redux/user/userSlice";
+
 import SessionExpirationMonitor from "./utils/SessionExpirationMonitor";
+import OtpInput from "./pages/OtpInput";
+import Reset from "./pages/ResetPass";
+import OnlyResetePrivateRoute from "./components/OnlyRestePrivateRoute";
 
 const App = () => {
   return (
@@ -32,7 +33,10 @@ const App = () => {
         <Route path="/sign-up" element={<SingUp />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/search" element={<Search />} />
-
+        <Route element={<OnlyResetePrivateRoute />}>
+          <Route path="/otp-input" element={<OtpInput />} />
+          <Route path="/reset" element={<Reset />} />
+        </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

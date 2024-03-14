@@ -10,11 +10,13 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import OAth from "../components/OAuth";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
+  const [Otp, setOTP] = useState(null);
   // const [errorMessage, setErrorMessage] = useState(null);
-  // const [loading, setLoading] = useState(false);
+  const [floading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ const SignIn = () => {
   const handelChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+  console.log(Otp);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +65,57 @@ const SignIn = () => {
   const handlePasswordShow = () => {
     setShowPassword(!showPassword);
   };
+  const handleForgotPass = async () => {
+    if (!formData.email) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please enter your email address",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    }
 
+    const OTP = Math.floor(Math.random() * 9000 + 1000);
+    setOTP(OTP);
+
+    if (formData.email) {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/recover/send_recovery_email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            OTP,
+            recipient_email: formData.email,
+          }),
+        });
+        const data = await res.json();
+        console.log(data);
+
+        if (res.ok) {
+          setLoading(false);
+
+          navigate("/otp-input", {
+            state: { otp: OTP, email: formData.email },
+          });
+        }
+        if (!res.ok) {
+          setLoading(false);
+          Swal.fire({
+            title: "Error!",
+            text: "Please enter a valide email address or sign-up",
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
+  console.log(Otp);
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -129,6 +182,16 @@ const SignIn = () => {
             </Button>
             <OAth />
           </form>
+          <div className=" my-1 border  border-gray-200">
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              className="w-full"
+              onClick={handleForgotPass}
+            >
+              {floading ? <Spinner /> : "Forgot Your Password Click here"}
+            </Button>
+          </div>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't Have an Account ?</span>
             <Link to={"/sign-up"} className="text-blue-500">

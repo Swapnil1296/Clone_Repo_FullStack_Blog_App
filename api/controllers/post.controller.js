@@ -1,6 +1,7 @@
 import Post from "../models/post.model.js";
 import { errorHandler } from "../utils/error.js";
 
+
 export const creatPost = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(400, "Your not allowed to create a post"));
@@ -9,6 +10,7 @@ export const creatPost = async (req, res, next) => {
   if (!req.body.title || !req.body.content) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
+
   const slug = req.body.title
     .split(" ")
     .join("-")
@@ -18,7 +20,11 @@ export const creatPost = async (req, res, next) => {
     ...req.body,
     slug,
     userId: req.user.id,
+    category: Array.isArray(req.body.category)
+      ? req.body.category
+      : [req.body.category],
   });
+
   try {
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);

@@ -1,58 +1,31 @@
-import React, { useEffect } from "react";
-import jwt from "jsonwebtoken";
-import { useNavigate } from "react-router-dom"; // Use appropriate routing library
+function getCookie(name) {
+  const cookieValue = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(name))
+    ?.split("=")[1];
+  return cookieValue ? decodeURIComponent(cookieValue) : null;
+}
+function isTokenExpired(tokenName) {
+  const accessToken = getCookie(tokenName); // Pass the token name
 
-// Function to check if the token is expired
-// Function to retrieve the token from cookies
-const getTokenFromCookies = () => {
-  const cookies = document.cookie.split(";");
-
-  for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split("=");
-
-    if (name === "access_token") {
-      // Replace 'yourTokenCookieName' with the actual name of your token cookie
-      return value;
-    }
-  }
-
-  return null;
-}; // Return
-
-const isTokenExpired = () => {
-  const token = getTokenFromCookies();
-  console.log("token", token);
-
-  if (!token) {
-    return true; // Token doesn't exist
+  if (!accessToken) {
+    // Token is not present
+    return true;
   }
 
   try {
-    const decodedToken = jwt.decode(token);
+    const tokenPayload = JSON.parse(
+      atob(accessToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))
+    ); // Decode JWT payload
+    console.log("Decoded Token Payload:", tokenPayload); // Log decoded payload
 
-    if (!decodedToken || !decodedToken.exp) {
-      return true; // Token is invalid or doesn't contain expiration information
-    }
+    const expirationTime = tokenPayload.exp * 1000; // Convert expiration time to milliseconds
 
-    const currentTime = Math.floor(Date.now() / 1000); // Convert to seconds
-
-    return decodedToken.exp < currentTime;
+    return expirationTime < Date.now();
   } catch (error) {
-    // Token decoding failed (expired or invalid)
-    return true;
+    console.error("Error parsing token payload:", error);
+    return true; // Assume expired in case of parsing error
   }
-};
+}
 
-const TokenExpirationChecker = ({ children }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isTokenExpired()) {
-      navigate("/login"); // Adjust the route based on your routes
-    }
-  }, [navigate]);
-
-  return children;
-};
-
-export default TokenExpirationChecker;
+// Example usage
