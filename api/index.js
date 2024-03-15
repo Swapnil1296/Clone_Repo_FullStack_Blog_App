@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoute.js";
@@ -30,6 +31,7 @@ app.listen(3000, () => {
 const __dirname = path.resolve();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
