@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 
-
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
@@ -15,7 +14,7 @@ import path from "path";
 dotenv.config();
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3002;
 mongoose
   .connect(process.env.MONGO)
   .then((x) => {
