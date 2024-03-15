@@ -17,15 +17,18 @@ export default function Reset() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(ipassword);
+
     if (ipassword.password !== ipassword.confirmPassword) {
       setError("Passwords should match");
       setPassword({ ...ipassword, password: "" });
       return;
     }
+
     if (ipassword.confirmPassword === "" || ipassword.password === "") {
       setError("Please fill all the fields.");
       return;
     }
+
     try {
       const res = await fetch(`/api/recover/reset_password`, {
         method: "PUT",
@@ -34,13 +37,12 @@ export default function Reset() {
         },
         body: JSON.stringify(ipassword),
       });
-      const data = await res.json();
 
       if (!res.ok) {
         if (res.status === 401) {
           Swal.fire({
             title: "Error!",
-            text: "Your session is Expired, Pleas try again",
+            text: "Your session is expired, please try again",
             icon: "error",
             confirmButtonText: "Ok",
           });
@@ -51,15 +53,20 @@ export default function Reset() {
           return;
         }
       }
+
+      const data = await res.json();
+
       if (res.ok) {
         Swal.fire({
-          title: "Succes!",
+          title: "Success!",
           text: "Password is updated successfully, please login again",
           icon: "success",
           confirmButtonText: "Ok",
         });
-        navigate("/sign-in", { replace: true });
+        // Clear the recovery_token cookie
         removeCookie("recovery_token");
+        // Redirect to sign-in page
+        navigate("/sign-in", { replace: true });
       }
     } catch (error) {
       console.log(error);

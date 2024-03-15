@@ -13,6 +13,16 @@ const OtpInput = () => {
   const navigate = useNavigate();
   console.log(state.otp);
   const inputRefs = useRef([]);
+  // const location = useLocation();
+  // console.log(location.state);
+  // const [fromForgotPassword, setFromForgotPassword] = useState(false);
+
+  // useEffect(() => {
+  //   // // Check if the user came from the Forgot Password page
+  //   // if (location.state && location.state.fromForgotPassword) {
+  //   //   setFromForgotPassword(true);
+  //   // }
+  // }, [location.state]);
   const navigateToNextInput = (index) => {
     if (index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
