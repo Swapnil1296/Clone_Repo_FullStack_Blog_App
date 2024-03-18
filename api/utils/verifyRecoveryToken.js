@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { errorHandler } from "./error.js";
 export const verifyRecoveryToken = (req, res, next) => {
   const token = req.cookies.recovery_token;
+  console.log(token);
 
   if (!token) {
     return next(errorHandler(401, "Unauthorized User"));
