@@ -106,7 +106,7 @@ const SignIn = () => {
       };
       try {
         const res = await fetch(
-          "http://localhost:3000/api/recover/send_recovery_email",
+          "https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/send_recovery_email",
 
           {
             method: "POST",
@@ -137,7 +137,7 @@ const SignIn = () => {
           icon: "error",
           confirmButtonText: "Ok",
         });
-        console.log(error.response.data);
+        console.log(error);
       }
     }
   };

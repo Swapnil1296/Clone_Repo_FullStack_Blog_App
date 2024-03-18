@@ -61,7 +61,7 @@ const OtpInput = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        "http://localhost:3000/api/recover/send_recovery_email",
+        "https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/send_recovery_email",
 
         {
           method: "POST",

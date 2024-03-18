@@ -16,7 +16,7 @@ export const verifyRecoveryToken = (req, res, next) => {
       if (err instanceof jwt.JsonWebTokenError) {
         return next(errorHandler(401, "Invalid Token"));
       }
-      return next(errorHandler(401, "Unauthorized User"));
+      return next(errorHandler(401, "JWT malfucntioned"));
     }
 
     req.user = decoded;

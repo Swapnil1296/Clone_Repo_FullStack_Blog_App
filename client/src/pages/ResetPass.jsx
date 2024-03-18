@@ -32,7 +32,7 @@ export default function Reset() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/recover/reset_password`,
+        `https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/reset_password`,
 
         {
           method: "PUT",
@@ -76,7 +76,7 @@ export default function Reset() {
       }
        
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
      
     }
   };
