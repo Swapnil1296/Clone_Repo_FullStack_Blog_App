@@ -16,9 +16,9 @@ dotenv.config();
 const app = express();
 const corsOptions = {
   // set origin to a specific origin.
-  // origin: "http://localhost:5173",
+  origin: "http://localhost:5173",
 
-  origin: true,
+  // origin: true,
 
   credentials: true,
   optionsSuccessStatus: 200,
