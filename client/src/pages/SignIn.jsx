@@ -55,9 +55,18 @@ const SignIn = () => {
       //   navigate("/");
       // }
       //setLoading(false);
-      const res = await axiosInstance.post(`/api/auth/signin`, formData, {
-        headers: { "content-type": "application/json" },
-      });
+      const res = await fetch(
+        `https://clone-repo-fullstack-blog-app-1.onrender.com/api/auth/signin`,
+
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        }
+      );
       console.log(res.ok);
       const data = res.data;
 
@@ -96,17 +105,19 @@ const SignIn = () => {
         recipient_email: formData.email,
       };
       try {
-        const res = await axiosInstance.post(
-          "/api/recover/send_recovery_email",
-          data,
+        const res = await fetch(
+          "https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/send_recovery_email",
+
           {
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             credentials: "include",
+            body: JSON.stringify(data),
           }
         );
-        const resData = res.data;
+        const resData = await res.json();
         console.log(resData);
 
         if (resData.statusCode === 200) {

@@ -31,17 +31,35 @@ export default function Reset() {
     }
 
     try {
-      const res = await axiosInstance.put(
-        `/api/recover/reset_password`,
-        ipassword,
+      const res = await fetch(
+        `https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/reset_password`,
+
         {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
+          body: JSON.stringify(ipassword),
         }
       );
-      const resData = res.data;
-      console.log(resData);
+      const resData = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          Swal.fire({
+            title: "Error!",
+            text: "Your session is expired, please try again",
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+          // Clear the recovery_token cookie
+          removeCookie("recovery_token");
+          // Redirect to sign-in page
+          navigate("/sign-in", { replace: true });
+          return;
+        }
+      }
 
       if (res.ok) {
         Swal.fire({
@@ -54,23 +72,12 @@ export default function Reset() {
         // Redirect to sign-in page
         navigate("/sign-in", { replace: true });
         // Clear the recovery_token cookie
-        // removeCookie("recovery_token");
+        removeCookie("recovery_token");
       }
+       
     } catch (error) {
       console.log(error.response.data);
-      if (error.response.data.statusCode === 401) {
-        Swal.fire({
-          title: "Error!",
-          text: "Your session is expired, please try again",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-        // Clear the recovery_token cookie
-        // removeCookie("recovery_token");
-        // Redirect to sign-in page
-        navigate("/sign-in", { replace: true });
-        return;
-      }
+     
     }
   };
 

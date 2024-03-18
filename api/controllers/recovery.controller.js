@@ -18,7 +18,7 @@ export const recoveryController = async (req, res, next) => {
       { email: oldUser.email, id: oldUser._id },
       secrete,
 
-      { expiresIn: "1m" }
+      { expiresIn: "2m" }
     );
 
     var transporter = nodemailer.createTransport({
@@ -72,10 +72,9 @@ export const recoveryController = async (req, res, next) => {
         next(errorHandler(error.statusCode, error.message));
       } else {
         // Email sent successfully, set the recovery token to cookies
-       res.cookie("recovery_token", Recoverytoken, {
-         httpOnly: false,
-       });
-       console.log("cookie");
+        res.cookie("recovery_token", Recoverytoken, {
+          httpOnly: false,
+        });
 
         res
           .status(200)

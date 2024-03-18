@@ -60,17 +60,19 @@ const OtpInput = () => {
     if (disable) return;
     setLoading(true);
     try {
-      const res = await axiosInstance.post(
-        "/api/recover/send_recovery_email",
-        { Otp, recipient_email: state.email },
+      const res = await fetch(
+        "https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/send_recovery_email",
+
         {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include",
+          body: JSON.stringify({ Otp, recipient_email: state.email }),
         }
       );
-      const data = res.data;
+      const data = await res.json();
       console.log(data);
       if (data.statusCode === 200) {
         setDisable(true);
