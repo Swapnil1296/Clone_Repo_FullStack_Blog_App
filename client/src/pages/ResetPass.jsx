@@ -32,7 +32,7 @@ export default function Reset() {
 
     try {
       const res = await fetch(
-        `https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/reset_password`,
+        `/api/recover/reset_password`,
 
         {
           method: "PUT",
@@ -44,7 +44,7 @@ export default function Reset() {
         }
       );
       const resData = await res.json();
-      console.log(resData);
+   
       if (!res.ok) {
         if (res.status === 401) {
           Swal.fire({

@@ -39,45 +39,23 @@ const SignIn = () => {
       return dispatch(signInFailure("Please fill all the field."));
     }
     try {
-      // const res = await fetch(`/api/auth/signin`, {
-      //   method: "POST",
-      //   headers: { "content-type": "application/json" },
-      //   body: JSON.stringify(formData),
-      // });
-      // const data = await res.json();
-      // if (data.success === false) {
-      //   // setLoading(false);
-      //   // return setErrorMessage(data.errorMessage);
-      //   dispatch(signInFailure(data.errorMessage));
-      // }
-      // if (res.ok) {
-      //   dispatch(signInSuccess(data));
-      //   navigate("/");
-      // }
-      //setLoading(false);
-      const res = await fetch(
-        `https://clone-repo-fullstack-blog-app-1.onrender.com/api/auth/signin`,
+      const res = await fetch(`/api/auth/signin`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
 
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(formData),
-        }
-      );
-      console.log(res.ok);
-      const data = res.data;
-
-      if (!data) {
+      if (data.success === false) {
+        // setLoading(false);
+        // return setErrorMessage(data.errorMessage);
         dispatch(signInFailure(data.errorMessage));
       }
-      if ((res.status = 200)) {
-        console.log("first");
+      if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
       }
+      //setLoading(false);
     } catch (error) {
       dispatch(signInFailure(error.errorMessage));
     }
@@ -106,7 +84,7 @@ const SignIn = () => {
       };
       try {
         const res = await fetch(
-          "https://clone-repo-fullstack-blog-app-1.onrender.com/api/recover/send_recovery_email",
+          "/api/recover/send_recovery_email",
 
           {
             method: "POST",

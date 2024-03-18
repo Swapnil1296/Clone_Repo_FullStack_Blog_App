@@ -28,16 +28,13 @@ const Header = () => {
   }, [location.search]);
   const handleSignout = async () => {
     try {
-      const res = await fetch(
-        `https://clone-repo-fullstack-blog-app-1.onrender.com/api/user/signout`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`/api/user/signout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
       if (res.status !== 200) {
         console.log(res.message);
