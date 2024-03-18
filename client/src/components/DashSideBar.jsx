@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { signoutSuccess } from "../redux/user/userSlice";
 
-
 export default function DashSidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -28,8 +27,9 @@ export default function DashSidebar() {
     }
   }, [location.search]);
   const handleSignout = async () => {
+    console.log(import.meta.env.BASE_URL);
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(`/api/user/signout`, {
         method: "POST",
       });
       const data = await res.json();

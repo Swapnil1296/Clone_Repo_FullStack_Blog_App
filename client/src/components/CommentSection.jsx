@@ -66,14 +66,14 @@ const CommentSection = ({ postId }) => {
         setError(null);
         setCommnetOnPost([data, ...commentOnPosts]);
       }
-       if (!res.ok) {
-         if (res.status === 401) {
-           SessionExpired().then(() => {
-             dispatch(signoutSuccess());
-             navigate("/sign-in", { replace: true });
-           });
-         }
-       }
+      if (!res.ok) {
+        if (res.status === 401) {
+          SessionExpired().then(() => {
+            dispatch(signoutSuccess());
+            navigate("/sign-in", { replace: true });
+          });
+        }
+      }
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -102,14 +102,14 @@ const CommentSection = ({ postId }) => {
           )
         );
       }
-       if (!res.ok) {
-         if (res.status === 401) {
-           SessionExpired().then(() => {
-             dispatch(signoutSuccess());
-             navigate("/sign-in", { replace: true });
-           });
-         }
-       }
+      if (!res.ok) {
+        if (res.status === 401) {
+          SessionExpired().then(() => {
+            dispatch(signoutSuccess());
+            navigate("/sign-in", { replace: true });
+          });
+        }
+      }
     } catch (error) {
       console.log(error.message);
     }

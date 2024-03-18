@@ -28,7 +28,7 @@ const Header = () => {
   }, [location.search]);
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(`/api/user/signout`, {
         method: "POST",
       });
       const data = await res.json();
@@ -55,10 +55,23 @@ const Header = () => {
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold  dark:text-white"
       >
-        <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
-          Random
+        <span className="px-2 py-1 bg-gradient-to-r from-cyan-500 via-teal-500 to-pink-500 rounded-lg text-white">
+          {/* <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100"
+            height="100"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5.91 11.02l3.54 1.54L16 7l-4.5 5.5 2.32 3.36-3.62 1.62L7 17l-1.59-5.12z"></path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg> */}
+          Rondom-Blogs
         </span>
-        Blogs
       </Link>
       <form onSubmit={handleSubmit}>
         <TextInput

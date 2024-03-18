@@ -22,17 +22,16 @@ const PostPage = () => {
         const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
 
-        
-          if (!res.ok) {
-            if (res.status === 401) {
-              SessionExpired().then(() => {
-                dispatch(signoutSuccess());
-                navigate("/sign-in", { replace: true });
-              });
-              setError(true);
-              setLoading(false);
-            }
+        if (!res.ok) {
+          if (res.status === 401) {
+            SessionExpired().then(() => {
+              dispatch(signoutSuccess());
+              navigate("/sign-in", { replace: true });
+            });
+            setError(true);
+            setLoading(false);
           }
+        }
         if (res.ok) {
           setPost(data.posts[0]);
 

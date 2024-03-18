@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { SessionExpired } from "../utils/Alert";
 import { signoutSuccess } from "../redux/user/userSlice";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { SelectMulti } from "./../utils/Creatable";
 
 const Search = () => {
@@ -83,7 +83,7 @@ const Search = () => {
       try {
         const searchQuery = urlParams.toString();
         console.log("searchQuery:-", searchQuery);
-        const res = await fetch(`/api/post/getposts?${searchQuery}`);
+        const res = await fetch(`api/post/getposts?${searchQuery}`);
         const data = await res.json();
         console.log("data: " + data.posts);
 
@@ -140,7 +140,7 @@ const Search = () => {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
-    const res = await fetch(`/api/post/getposts?${searchQuery}`);
+    const res = await fetch(`api/post/getposts?${searchQuery}`);
     if (!res.ok) {
       return;
     }

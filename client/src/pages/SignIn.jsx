@@ -20,11 +20,11 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const handelChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-  console.log(Otp);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const SignIn = () => {
       return dispatch(signInFailure("Please fill all the field."));
     }
     try {
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch(`/api/auth/signin`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(formData),
@@ -81,7 +81,7 @@ const SignIn = () => {
     if (formData.email) {
       setLoading(true);
       try {
-        const res = await fetch("/api/recover/send_recovery_email", {
+        const res = await fetch("api/recover/send_recovery_email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -92,11 +92,10 @@ const SignIn = () => {
           }),
         });
         const data = await res.json();
-        console.log(data);
 
         if (res.ok) {
           setLoading(false);
-
+          console.log("navigate success");
           navigate("/otp-input", {
             state: { otp: OTP, email: formData.email },
           });
