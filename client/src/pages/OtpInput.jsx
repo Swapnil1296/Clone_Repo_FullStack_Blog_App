@@ -67,11 +67,12 @@ const OtpInput = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
         }
       );
       const data = res.data;
       console.log(data);
-      if (res.statusCode === 200) {
+      if (data.statusCode === 200) {
         setDisable(true);
         Swal.fire({
           title: "Alert!",
@@ -81,6 +82,7 @@ const OtpInput = () => {
         });
         setLoading(false);
         setTimer(60);
+        console.log(loading);
       }
     } catch (error) {
       console.log(error);

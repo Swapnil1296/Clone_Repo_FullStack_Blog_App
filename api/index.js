@@ -14,7 +14,18 @@ import path from "path";
 
 dotenv.config();
 const app = express();
+const corsOptions = {
+  // set origin to a specific origin.
+  // origin: "http://localhost:5173",
 
+  origin: true,
+
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors(corsOptions));
 const port = process.env.PORT || 3002;
 mongoose
   .connect(process.env.MONGO)
@@ -28,10 +39,6 @@ mongoose
 app.listen(3000, () => {
   console.log(`server is running on  ${port}`);
 });
-const __dirname = path.resolve();
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
@@ -39,11 +46,7 @@ app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/recover", recoveryRoutes);
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
 app.get("/", (req, res) => {
   const sessionData = req.session;
   console.log(sessionData);

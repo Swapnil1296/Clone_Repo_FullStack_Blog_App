@@ -33,10 +33,10 @@ const App = () => {
         <Route path="/sign-up" element={<SingUp />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/search" element={<Search />} />
-        <Route element={<OnlyResetePrivateRoute />}>
-          <Route path="/otp-input" element={<OtpInput />} />
-          <Route path="/reset" element={<Reset />} />
-        </Route>
+        {/* <Route element={<OnlyResetePrivateRoute />}> */}
+        <Route path="/otp-input" element={<OtpInput />} />
+        <Route path="/reset" element={<Reset />} />
+        {/* </Route> */}
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

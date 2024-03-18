@@ -54,7 +54,7 @@ export default function Reset() {
         // Redirect to sign-in page
         navigate("/sign-in", { replace: true });
         // Clear the recovery_token cookie
-        removeCookie("recovery_token");
+        // removeCookie("recovery_token");
       }
     } catch (error) {
       console.log(error.response.data);
@@ -66,7 +66,7 @@ export default function Reset() {
           confirmButtonText: "Ok",
         });
         // Clear the recovery_token cookie
-        removeCookie("recovery_token");
+        // removeCookie("recovery_token");
         // Redirect to sign-in page
         navigate("/sign-in", { replace: true });
         return;

@@ -12,6 +12,7 @@ import {
 import OAth from "../components/OAuth";
 import Swal from "sweetalert2";
 import axiosInstance from "../axiosInstance/axiosInstace";
+import axios from "axios";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -96,12 +97,13 @@ const SignIn = () => {
       };
       try {
         const res = await axiosInstance.post(
-          "api/recover/send_recovery_email",
+          "/api/recover/send_recovery_email",
           data,
           {
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
           }
         );
         const resData = res.data;
@@ -116,10 +118,11 @@ const SignIn = () => {
           });
         }
       } catch (error) {
+        console.log(error);
         setLoading(false);
         Swal.fire({
           title: "Error!",
-          text: `${error.response.data.errorMessage}`,
+          text: `something went wrong`,
           icon: "error",
           confirmButtonText: "Ok",
         });
