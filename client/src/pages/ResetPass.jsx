@@ -4,6 +4,7 @@ import { SessionExpired } from "../utils/Alert";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import axiosInstance from "../axiosInstance/axiosInstace";
 
 export default function Reset() {
   const [cookies, setCookie, removeCookie] = useCookies(["recovery_token"]);
@@ -30,31 +31,17 @@ export default function Reset() {
     }
 
     try {
-      const res = await fetch(`/api/recover/reset_password`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ipassword),
-      });
-
-      if (!res.ok) {
-        if (res.status === 401) {
-          Swal.fire({
-            title: "Error!",
-            text: "Your session is expired, please try again",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
-          // Clear the recovery_token cookie
-          removeCookie("recovery_token");
-          // Redirect to sign-in page
-          navigate("/sign-in", { replace: true });
-          return;
+      const res = await axiosInstance.put(
+        `/api/recover/reset_password`,
+        ipassword,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      }
-
-      const data = await res.json();
+      );
+      const resData = res.data;
+      console.log(resData);
 
       if (res.ok) {
         Swal.fire({
@@ -69,7 +56,20 @@ export default function Reset() {
         navigate("/sign-in", { replace: true });
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      if (error.response.data.statusCode === 401) {
+        Swal.fire({
+          title: "Error!",
+          text: "Your session is expired, please try again",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+        // Clear the recovery_token cookie
+        removeCookie("recovery_token");
+        // Redirect to sign-in page
+        navigate("/sign-in", { replace: true });
+        return;
+      }
     }
   };
 

@@ -66,20 +66,25 @@ export const recoveryController = async (req, res, next) => {
 </html>`,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        // Handle email sending error
-        next(errorHandler(error.statusCode, error.message));
-      } else {
-        // Email sent successfully, set the recovery token to cookies
+    transporter
+      .sendMail(mailOptions, function (error, info) {
+        if (error) {
+          // Handle email sending error
+          next(errorHandler(error.statusCode, error.message));
+        } else {
+          // Email sent successfully, set the recovery token to cookies
+        }
+      })
+      .then(() =>
         res.cookie("recovery_token", Recoverytoken, {
           httpOnly: false,
-        });
+        })
+      )
+      .then(() =>
         res
           .status(200)
-          .json({ statusCode: 200, message: "Email has been sent." });
-      }
-    });
+          .json({ statusCode: 200, message: "Email has been sent." })
+      );
   } catch (error) {
     next(errorHandler(error.statusCode, error.message));
   }

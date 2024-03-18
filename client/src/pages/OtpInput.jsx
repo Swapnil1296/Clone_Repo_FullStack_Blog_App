@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Spinner } from "flowbite-react";
+import axiosInstance from "../axiosInstance/axiosInstace";
 
 const OtpInput = () => {
   const { state } = useLocation();
@@ -59,19 +60,18 @@ const OtpInput = () => {
     if (disable) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/recover/send_recovery_email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Otp,
-          recipient_email: state.email,
-        }),
-      });
-      const data = res.json();
+      const res = await axiosInstance.post(
+        "/api/recover/send_recovery_email",
+        { Otp, recipient_email: state.email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = res.data;
       console.log(data);
-      if (res.ok) {
+      if (res.statusCode === 200) {
         setDisable(true);
         Swal.fire({
           title: "Alert!",
@@ -86,7 +86,7 @@ const OtpInput = () => {
       console.log(error);
       Swal.fire({
         title: "Error!",
-        text: "Failed to resend OTP",
+        text: `${error.response.data.errorMessage}`,
         icon: "error",
         confirmButtonText: "Ok",
       });

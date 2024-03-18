@@ -107,11 +107,12 @@ const SignIn = () => {
         const resData = res.data;
         console.log(resData);
 
-        if (resData.ok) {
+        if (resData.statusCode === 200) {
           setLoading(false);
           console.log("navigate success");
           navigate("/otp-input", {
             state: { otp: OTP, email: formData.email },
+            replace: true,
           });
         }
       } catch (error) {
