@@ -75,7 +75,9 @@ export const recoveryController = async (req, res, next) => {
         res.cookie("recovery_token", Recoverytoken, {
           httpOnly: false,
         });
-        res.status(200).json({ message: info.response });
+        res
+          .status(200)
+          .json({ statusCode: 200, message: "Email has been sent." });
       }
     });
   } catch (error) {

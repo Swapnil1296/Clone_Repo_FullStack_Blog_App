@@ -2,6 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import axiosInstance from "../axiosInstance/axiosInstace";
 
 const SingUp = () => {
   const [formData, setFormData] = useState({});
@@ -20,23 +21,21 @@ const SingUp = () => {
       return setErrorMessage("Please fill all the field.");
     }
     try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
+      const res = await axiosInstance.post("/api/auth/signup", formData, {
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(formData),
       });
-      const data = await res.json();
 
-      if (data.success === false) {
+      if (res.status !== 200) {
         setLoading(false);
         return setErrorMessage(data.errorMessage);
       }
-      if (res.ok) {
+      if (res.status === 200) {
         navigate("/sign-in");
       }
       setLoading(false);
     } catch (error) {
       setErrorMessage(error.errorMessage);
+      console.log(error.errorMessage);
 
       setLoading(false);
       //console.log("error:", error.message);

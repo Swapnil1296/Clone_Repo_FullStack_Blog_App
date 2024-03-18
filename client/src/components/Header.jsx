@@ -7,9 +7,9 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
+import axiosInstance from "../axiosInstance/axiosInstace";
 
 const Header = () => {
-  // this hook is used to get current url link/route.
   const getPath = useLocation();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -28,12 +28,10 @@ const Header = () => {
   }, [location.search]);
   const handleSignout = async () => {
     try {
-      const res = await fetch(`/api/user/signout`, {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
+      const res = await axiosInstance.post(`/api/user/signout`);
+
+      if (res.status !== 200) {
+        console.log(res.message);
       } else {
         dispatch(signoutSuccess());
       }

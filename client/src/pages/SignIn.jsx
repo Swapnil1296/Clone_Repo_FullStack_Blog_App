@@ -11,6 +11,7 @@ import {
 } from "../redux/user/userSlice";
 import OAth from "../components/OAuth";
 import Swal from "sweetalert2";
+import axiosInstance from "../axiosInstance/axiosInstace";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -37,29 +38,38 @@ const SignIn = () => {
       return dispatch(signInFailure("Please fill all the field."));
     }
     try {
-      const res = await fetch(`/api/auth/signin`, {
-        method: "POST",
+      // const res = await fetch(`/api/auth/signin`, {
+      //   method: "POST",
+      //   headers: { "content-type": "application/json" },
+      //   body: JSON.stringify(formData),
+      // });
+      // const data = await res.json();
+      // if (data.success === false) {
+      //   // setLoading(false);
+      //   // return setErrorMessage(data.errorMessage);
+      //   dispatch(signInFailure(data.errorMessage));
+      // }
+      // if (res.ok) {
+      //   dispatch(signInSuccess(data));
+      //   navigate("/");
+      // }
+      //setLoading(false);
+      const res = await axiosInstance.post(`/api/auth/signin`, formData, {
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(formData),
       });
-      const data = await res.json();
+      console.log(res.ok);
+      const data = res.data;
 
-      if (data.success === false) {
-        // setLoading(false);
-        // return setErrorMessage(data.errorMessage);
+      if (!data) {
         dispatch(signInFailure(data.errorMessage));
       }
-      if (res.ok) {
+      if ((res.status = 200)) {
+        console.log("first");
         dispatch(signInSuccess(data));
         navigate("/");
       }
-      //setLoading(false);
     } catch (error) {
-      //setErrorMessage(error.errorMessage);
-      // setLoading(false);
-
       dispatch(signInFailure(error.errorMessage));
-      //console.log("error:", error.message);
     }
   };
   const handlePasswordShow = () => {
@@ -80,41 +90,43 @@ const SignIn = () => {
 
     if (formData.email) {
       setLoading(true);
+      const data = {
+        OTP: OTP,
+        recipient_email: formData.email,
+      };
       try {
-        const res = await fetch("api/recover/send_recovery_email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            OTP,
-            recipient_email: formData.email,
-          }),
-        });
-        const data = await res.json();
+        const res = await axiosInstance.post(
+          "api/recover/send_recovery_email",
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const resData = res.data;
+        console.log(resData);
 
-        if (res.ok) {
+        if (resData.ok) {
           setLoading(false);
           console.log("navigate success");
           navigate("/otp-input", {
             state: { otp: OTP, email: formData.email },
           });
         }
-        if (!res.ok) {
-          setLoading(false);
-          Swal.fire({
-            title: "Error!",
-            text: "Please enter a valide email address or sign-up",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
-        }
       } catch (error) {
-        console.log(error.message);
+        setLoading(false);
+        Swal.fire({
+          title: "Error!",
+          text: `${error.response.data.errorMessage}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+        console.log(error.response.data);
       }
     }
   };
-  console.log(Otp);
+  // console.log(Otp);
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -181,7 +193,7 @@ const SignIn = () => {
             </Button>
             <OAth />
           </form>
-          <div className=" my-1 border  border-gray-200">
+          <div className=" my-1">
             <Button
               gradientDuoTone="purpleToPink"
               type="submit"
