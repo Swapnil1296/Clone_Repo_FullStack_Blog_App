@@ -50,10 +50,11 @@ export default function Reset() {
           icon: "success",
           confirmButtonText: "Ok",
         });
-        // Clear the recovery_token cookie
-        removeCookie("recovery_token");
+
         // Redirect to sign-in page
         navigate("/sign-in", { replace: true });
+        // Clear the recovery_token cookie
+        removeCookie("recovery_token");
       }
     } catch (error) {
       console.log(error.response.data);
