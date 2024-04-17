@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-
+import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -14,18 +14,11 @@ import path from "path";
 
 dotenv.config();
 const app = express();
-const corsOptions = {
-  // set origin to a specific origin.
-  // origin: "http://localhost:5173",
 
-  origin: true,
-
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors(corsOptions));
+app.use(cors());
 const port = process.env.PORT || 3002;
 mongoose
   .connect(process.env.MONGO)

@@ -54,28 +54,19 @@ const Header = () => {
   };
 
   return (
-    <Navbar className="border-b-2 ">
+    <Navbar className="border-b-2 bg-slate-400">
       <Link
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold  dark:text-white"
       >
-        <span className="px-2 py-1 bg-gradient-to-r from-cyan-500 via-teal-500 to-pink-500 rounded-lg text-white">
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100"
-            height="100"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M5.91 11.02l3.54 1.54L16 7l-4.5 5.5 2.32 3.36-3.62 1.62L7 17l-1.59-5.12z"></path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg> */}
-          Rondom-Blogs
+        <span className="relative px-5 py-2 font-medium text-white group">
+          <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform translate-x-0 -skew-x-12 bg-purple-500 group-hover:bg-purple-700 group-hover:skew-x-12"></span>
+          <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform skew-x-12 bg-purple-700 group-hover:bg-purple-500 group-hover:-skew-x-12"></span>
+          <span className="absolute bottom-0 left-0 hidden w-10 h-20 transition-all duration-100 ease-out transform -translate-x-8 translate-y-10 bg-purple-600 -rotate-12"></span>
+          <span className="absolute bottom-0 right-0 hidden w-10 h-20 transition-all duration-100 ease-out transform translate-x-10 translate-y-8 bg-purple-400 -rotate-12"></span>
+          <span className="relative">Super-Content</span>
         </span>
+        {/* <span className="px-2 py-1 bg-gradient-to-r from-cyan-500 via-teal-500 to-pink-500 rounded-lg text-white"></span> */}
       </Link>
       <form onSubmit={handleSubmit}>
         <TextInput

@@ -1,6 +1,6 @@
 import { Button, Modal, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
@@ -14,6 +14,8 @@ const PostPage = () => {
   const [recentPost, setRecentPost] = useState(null);
   const [currentPost, setCurrentPost] = useState(post);
   const [openModal, setOpenModal] = useState(false);
+  const location = useLocation();
+  console.log("postPage", location.pathname);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -21,6 +23,7 @@ const PostPage = () => {
         setLoading(true);
         const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
+        console.log(data.posts[0]._id);
 
         if (!res.ok) {
           if (res.status === 401) {
@@ -125,7 +128,7 @@ const PostPage = () => {
       <div className="max-w-4xl mx-auto w-full">
         <CallToAction />
       </div>
-      <CommentSection postId={post._id} />
+      <CommentSection postId={post._id} location={location.pathname} />
 
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>

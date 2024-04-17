@@ -19,6 +19,7 @@ export default function Comments({ comment, onLike, onEdit, onDelete }) {
       try {
         const res = await fetch(`api/user/${comment.userId}`);
         const data = await res.json();
+        console.log(res)
         if (res.ok) {
           setUser(data);
         }
@@ -31,7 +32,7 @@ export default function Comments({ comment, onLike, onEdit, onDelete }) {
           }
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
       }
     };
     getUser();

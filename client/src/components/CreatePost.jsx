@@ -139,8 +139,8 @@ const CreatePost = () => {
   console.log(categorries);
 
   return (
-    <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <h1 className="text-center text-3xl font-semibold">Create a Post</h1>
+    <div className="p-3 w-full max-w-4xl mx-auto min-h-screen">
+      <h1 className="text-center text-3xl font-semibold mb-3">Create a Post</h1>
       <form
         action=""
         className="flex flex-col gap-4"

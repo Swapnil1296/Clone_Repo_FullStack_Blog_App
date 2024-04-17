@@ -11,8 +11,8 @@ import {
 } from "../redux/user/userSlice";
 import OAth from "../components/OAuth";
 import Swal from "sweetalert2";
-import axiosInstance from "../axiosInstance/axiosInstace";
-import axios from "axios";
+
+
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});

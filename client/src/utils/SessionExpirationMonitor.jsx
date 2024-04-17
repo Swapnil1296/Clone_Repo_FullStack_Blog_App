@@ -10,13 +10,12 @@ const SessionExpirationMonitor = () => {
     let inactivityTimer;
 
     const resetSession = () => {
-      console.log("in reset session");
-      dispatch(signoutSuccess()); // You might need to replace this with your actual logout logic
+      dispatch(signoutSuccess());
     };
 
     const handleUserActivity = () => {
       clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(resetSession, 60 * 60 * 1000); // Set the same inactivity threshold as on the server (30 minutes)
+      inactivityTimer = setTimeout(resetSession, 60 * 60 * 1000);
     };
 
     // Attach event listeners for user activity

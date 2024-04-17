@@ -1,13 +1,14 @@
 import { Alert, Button, Modal, Spinner, Textarea } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Comments from "./Comments";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { SessionExpired } from "./../utils/Alert";
 import { signoutSuccess } from "../redux/user/userSlice";
+import DraftEditor from "./Draft";
 
-const CommentSection = ({ postId }) => {
+const CommentSection = ({ postId, location }) => {
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
@@ -17,10 +18,11 @@ const CommentSection = ({ postId }) => {
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
+
+  useMemo(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`/api/comment//getPostComments/${postId}`);
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
         const data = await res.json();
         if (res.ok) {
           setCommnetOnPost(data);
@@ -59,7 +61,7 @@ const CommentSection = ({ postId }) => {
         }),
       });
       const data = await res.json();
-      console.log(data);
+
       setLoading(false);
       if (res.ok) {
         setComment("");
@@ -148,6 +150,16 @@ const CommentSection = ({ postId }) => {
         <Spinner size={"xl"} />
       </div>
     );
+  //handle unsaved comments
+  const draftKye = "draftContent";
+  const handleCommentChange = (event) => {
+    const draftData = {
+      value: event.target.value,
+      postId: postId,
+    };
+    setComment(event.target.value);
+    localStorage.setItem(`${draftKye}_${postId}`, JSON.stringify(draftData));
+  };
 
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
@@ -183,7 +195,7 @@ const CommentSection = ({ postId }) => {
             placeholder="Add your comment here.."
             rows={3}
             maxLength={200}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={handleCommentChange}
             value={comment}
           />
           <div className="flex justify-between items-center mt-5">
@@ -221,6 +233,14 @@ const CommentSection = ({ postId }) => {
           ))}
         </>
       )}
+
+      <DraftEditor
+        comment={comment}
+        location={location}
+        setComment={setComment}
+        postId={postId}
+        draftKye={draftKye}
+      />
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}

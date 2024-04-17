@@ -22,6 +22,10 @@ const commentSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    draft: {
+      type: Boolean,
+      default: false, // Initially, the comment is not a draft
+    },
   },
   { timestamps: true }
 );

@@ -4,16 +4,6 @@ import { errorHandler } from "../utils/error.js";
 export const createComment = async (req, res, next) => {
   try {
     const { content, postId, userId } = req.body;
-    console.log("userId:-", userId);
-    console.log("content:-", content);
-    console.log("postId:-", postId);
-    console.log("req.user.id:-", req.user.id);
-
-    if (userId !== req.user.id) {
-      return next(
-        errorHandler(403, "You are not allowed to create this comment")
-      );
-    }
 
     const newComment = new Comment({
       content,
@@ -127,5 +117,27 @@ export const getcomments = async (req, res, next) => {
     res.status(200).json({ comments, totalComments, lastMonthComments });
   } catch (error) {
     next(error);
+  }
+};
+
+// Route to save a draft comment
+export const draftComment = async (req, res) => {
+  try {
+    const { content, postId, userId } = req.body;
+    console.log("userId:-", userId);
+    console.log("content:-", content);
+    console.log("postId:-", postId);
+    console.log("req.user.id:-", req.user.id);
+
+    if (userId !== req.user.id) {
+      return next(
+        errorHandler(403, "You are not allowed to create this comment")
+      );
+    }
+    const newComment = new Comment({ content, postId, userId, draft: true });
+    await newComment.save();
+    res.status(201).json(newComment);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };

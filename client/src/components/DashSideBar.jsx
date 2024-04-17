@@ -6,7 +6,9 @@ import {
   HiOutlineUserGroup,
   HiAnnotation,
   HiChartPie,
+
 } from "react-icons/hi";
+import { MdOutlinePostAdd } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { signoutSuccess } from "../redux/user/userSlice";
@@ -76,6 +78,17 @@ export default function DashSidebar() {
                 as="div"
               >
                 Posts
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=create-post">
+              <Sidebar.Item
+                active={tab === "create-post"}
+                icon={MdOutlinePostAdd}
+                as="div"
+              >
+                Create Posts
               </Sidebar.Item>
             </Link>
           )}
